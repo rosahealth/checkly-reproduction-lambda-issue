@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "checkly": "^4.0.14",
+    "serverless-offline": "^12.0.4"
+  }
+}
