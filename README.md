@@ -1,92 +1,26 @@
-<!--
-title: 'AWS Simple HTTP Endpoint example in NodeJS'
-description: 'This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: nodeJS
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# Introduction
+Our deployment pipeline relies on lambda functions during its process.
+Two of those lambda functions are used to start canary runs during the blue/green deployment.
 
-# Serverless Framework Node HTTP API on AWS
+We used to be able to start the canaries using an http request. Now it is not possible anymore but we're not able to have the checkly CLI running properly in a lambda environment.
 
-This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
+The checkly package is packaged as can be seen in the .serverless folder that you obtain after running the app.
 
-This template does not include any kind of persistence (database). For more advanced examples, check out the [serverless/examples repository](https://github.com/serverless/examples/) which includes Typescript, Mongo, DynamoDB and other examples.
+# How to run the code
 
-## Usage
+1. Run npm i 
 
-### Deployment
+2. Run the serverless app using 
+```CHECKLY_API_KEY=<a valid api key> CHECKLY_ACCOUNT_ID=<a valid account id> npx serverless offline```
+
+3. Make an http request to GET http://localhost:3000
+
+4. Current output
 
 ```
-$ serverless deploy
+{"errorMessage":"env: node: No such file or directory\n","errorType":"Error","stackTrace":["Error: env: node: No such file or directory","","at module.exports.handler (/Users/noste/Development/rosa-health/checkly-cli-in-aws-lambda/index.js:14:13)","at InProcessRunner.run (file:///Users/noste/Development/rosa-health/checkly-cli-in-aws-lambda/node_modules/serverless-offline/src/lambda/handler-runner/in-process-runner/InProcessRunner.js:87:20)"]}
 ```
 
-After deploying, you should see output similar to:
+Expected output
 
-```bash
-Deploying aws-node-http-api-project to stage dev (us-east-1)
-
-✔ Service deployed to stack aws-node-http-api-project-dev (152s)
-
-endpoint: GET - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/
-functions:
-  hello: aws-node-http-api-project-dev-hello (1.9 kB)
-```
-
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [http event docs](https://www.serverless.com/framework/docs/providers/aws/events/apigateway/).
-
-### Invocation
-
-After successful deployment, you can call the created application via HTTP:
-
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/
-```
-
-Which should result in response similar to the following (removed `input` content for brevity):
-
-```json
-{
-  "message": "Go Serverless v2.0! Your function executed successfully!",
-  "input": {
-    ...
-  }
-}
-```
-
-### Local development
-
-You can invoke your function locally by using the following command:
-
-```bash
-serverless invoke local --function hello
-```
-
-Which should result in response similar to the following:
-
-```
-{
-  "statusCode": 200,
-  "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": \"\"\n}"
-}
-```
-
-
-Alternatively, it is also possible to emulate API Gateway and Lambda locally by using `serverless-offline` plugin. In order to do that, execute the following command:
-
-```bash
-serverless plugin install -n serverless-offline
-```
-
-It will add the `serverless-offline` plugin to `devDependencies` in `package.json` file as well as will add it to `plugins` in `serverless.yml`.
-
-After installation, you can start local emulation with:
-
-```
-serverless offline
-```
-
-To learn more about the capabilities of `serverless-offline`, please refer to its [GitHub repository](https://github.com/dherault/serverless-offline).
+Checks should be started in the related checkly account.
