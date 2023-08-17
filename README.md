@@ -4,7 +4,7 @@ Two of those lambda functions are used to start canary runs during the blue/gree
 
 We used to be able to start the canaries using an http request. Now it is not possible anymore but we're not able to have the checkly CLI running properly in a lambda environment.
 
-The checkly package is packaged as can be seen in the .serverless folder that you obtain after running the app.
+The checkly package is packaged as can be seen in the .serverless/checkly-cli-in-aws-lambda.zip file that you obtain after running the app.
 
 # How to run the code
 
